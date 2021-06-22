@@ -1,6 +1,8 @@
 import socket
 import threading
 
+from utils import recv_msg, send_msg
+
 host = '127.0.0.1'  # TODO: Change to alles oder so?
 port = 50000
 
@@ -16,14 +18,14 @@ nicknames = []
 # Sends messages to all connected clients
 def broadcast(message):
     for client in clients:
-        client.send(message)
+        send_msg(client, message)
 
 
 # Sub thread: Handles messages from clients
 def handle(client):
     while True:
         try:
-            message = client.recv(1024)
+            message = recv_msg(client)
             # TODO: Handle '/gusten'
             broadcast(message)
         except:
@@ -32,7 +34,9 @@ def handle(client):
             clients.remove(client)
             client.close()
             nickname = nicknames[index]
-            broadcast('{} hat den Chat verlassen!'.format(nickname).encode('ascii'))
+            msg = '{} hat den Chat verlassen!'.format(nickname)
+            print(msg)
+            broadcast(msg)
             nicknames.remove(nickname)
             break
 
@@ -45,15 +49,15 @@ def receive():
         print("Verbunden mit {}".format(str(address)))
 
         # Request and store nickname
-        client.send('NICK'.encode('ascii'))  # TODO: Können Nutzer damit Unsinn treiben, indem sie nur NICK schreiben?
-        nickname = client.recv(1024).decode('ascii')
+        send_msg(client, 'NICK')  # TODO: Können Nutzer damit Unsinn treiben, indem sie nur NICK schreiben?
+        nickname = recv_msg(client)
         nicknames.append(nickname)
         clients.append(client)
 
         # Print and broadcast nickname
         print("Name ist {}".format(nickname))
-        broadcast("{} ist dem Chat beigetreten!".format(nickname).encode('ascii'))
-        client.send('Verbindung hergestellt!'.encode('ascii'))
+        broadcast("{} ist dem Chat beigetreten!".format(nickname))
+        send_msg(client, 'Verbindung hergestellt!')
 
         # Start handling thread for client
         thread = threading.Thread(target=handle, args=(client,))  # TODO: Geht das nicht auch ohne Komma?

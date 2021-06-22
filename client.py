@@ -1,6 +1,8 @@
 import socket
 import threading
 
+from utils import send_msg, recv_msg
+
 host = '127.0.0.1'  # TODO: Change to input
 port = 50000
 
@@ -15,8 +17,8 @@ client.connect((host, port))
 # Sends messages to server
 def write():
     while True:
-        message = '{}: {}'.format(nickname, input(''))
-        client.send(message.encode('ascii'))
+        message = '<{}> {}'.format(nickname, input(''))
+        send_msg(client, message)
 
 
 # Listens to server and sending nickname
@@ -25,9 +27,9 @@ def receive():
         try:
             # Receive message from server
             # If 'NICK' send nickname
-            message = client.recv(1024).decode('ascii')
+            message = recv_msg(client)
             if message == 'NICK':
-                client.send(nickname.encode('ascii'))
+                send_msg(client, nickname)
             else:
                 print(message)
         except:
