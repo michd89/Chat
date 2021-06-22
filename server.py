@@ -4,7 +4,7 @@ import threading
 
 from utils import recv_msg, send_msg
 
-host = ''
+host = '0.0.0.0'
 port = 50000
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
