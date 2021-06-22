@@ -3,11 +3,10 @@ import threading
 
 from utils import send_msg, recv_msg
 
-host = '127.0.0.1'  # TODO: Change to input
 port = 50000
 
-# Choosing nickname
-nickname = input("Name: ")
+host = input('Hostname oder IP: ')
+nickname = input('Name: ')
 
 # Connecting to server
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
