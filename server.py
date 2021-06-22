@@ -3,7 +3,7 @@ import threading
 
 from utils import recv_msg, send_msg
 
-host = '127.0.0.1'  # TODO: Change to alles oder so?
+host = ''
 port = 50000
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -16,9 +16,10 @@ nicknames = []
 
 
 # Sends messages to all connected clients
-def broadcast(message):
+def broadcast(message, exceptions=[]):
     for client in clients:
-        send_msg(client, message)
+        if client not in exceptions:
+            send_msg(client, message)
 
 
 # Sub thread: Handles messages from clients
@@ -49,18 +50,18 @@ def receive():
         print("Verbunden mit {}".format(str(address)))
 
         # Request and store nickname
-        send_msg(client, 'NICK')  # TODO: Können Nutzer damit Unsinn treiben, indem sie nur NICK schreiben?
+        send_msg(client, 'NICK')
         nickname = recv_msg(client)
         nicknames.append(nickname)
         clients.append(client)
 
         # Print and broadcast nickname
         print("Name ist {}".format(nickname))
-        broadcast("{} ist dem Chat beigetreten!".format(nickname))
         send_msg(client, 'Verbindung hergestellt!')
+        broadcast("{} ist dem Chat beigetreten!".format(nickname), [client])
 
         # Start handling thread for client
-        thread = threading.Thread(target=handle, args=(client,))  # TODO: Geht das nicht auch ohne Komma?
+        thread = threading.Thread(target=handle, args=([client]))
         thread.start()
 
 
