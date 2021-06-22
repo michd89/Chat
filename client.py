@@ -5,7 +5,9 @@ from utils import send_msg, recv_msg
 
 port = 50000
 
-host = input('Hostname oder IP: ')
+host = input('Hostname oder IP (leer = localhost): ')
+if not host:
+    host = 'localhost'
 nickname = input('Name: ')
 
 # Connecting to server
