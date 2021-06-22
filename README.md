@@ -1,0 +1,1 @@
+Simple Chat with german interface using Python sockets.
