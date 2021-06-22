@@ -64,7 +64,7 @@ def receive():
 
         # Print and broadcast nickname
         print("Name ist {}".format(nickname))
-        send_msg(client, 'Verbindung hergestellt!')
+        send_msg(client, 'Verbindung hergestellt! ')
         send_msg(client, get_users_message())
         broadcast("{} ist dem Chat beigetreten!".format(nickname), [client])
 
