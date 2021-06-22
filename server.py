@@ -1,3 +1,4 @@
+import re
 import socket
 import threading
 
@@ -27,8 +28,10 @@ def handle(client):
     while True:
         try:
             message = recv_msg(client)
-            # TODO: Handle '/gusten'
-            broadcast(message)
+            if re.search(r'^<.+> /gusten$', message):
+                send_msg(client, 'Anwesende Gusten: ' + ', '.join(nicknames))
+            else:
+                broadcast(message)
         except:
             # Remove and close client
             index = clients.index(client)
@@ -58,6 +61,7 @@ def receive():
         # Print and broadcast nickname
         print("Name ist {}".format(nickname))
         send_msg(client, 'Verbindung hergestellt!')
+        send_msg(client, 'Anwesende Gusten: ' + ', '.join(nicknames))
         broadcast("{} ist dem Chat beigetreten!".format(nickname), [client])
 
         # Start handling thread for client
