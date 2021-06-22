@@ -16,6 +16,10 @@ clients = []
 nicknames = []
 
 
+def get_users_message():
+    return 'Anwesende Gusten: ' + ', '.join(nicknames)
+
+
 # Sends messages to all connected clients
 def broadcast(message, exceptions=[]):
     for client in clients:
@@ -29,7 +33,7 @@ def handle(client):
         try:
             message = recv_msg(client)
             if re.search(r'^<.+> /gusten$', message):
-                send_msg(client, 'Anwesende Gusten: ' + ', '.join(nicknames))
+                send_msg(client, get_users_message())
             else:
                 broadcast(message)
         except:
@@ -61,7 +65,7 @@ def receive():
         # Print and broadcast nickname
         print("Name ist {}".format(nickname))
         send_msg(client, 'Verbindung hergestellt!')
-        send_msg(client, 'Anwesende Gusten: ' + ', '.join(nicknames))
+        send_msg(client, get_users_message())
         broadcast("{} ist dem Chat beigetreten!".format(nickname), [client])
 
         # Start handling thread for client
