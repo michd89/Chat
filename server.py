@@ -63,9 +63,9 @@ def receive():
         clients.append(client)
 
         # Print and broadcast nickname
-        print("Name ist {}".format(nickname))
-        send_msg(client, 'Verbindung hergestellt! ')
-        send_msg(client, get_users_message())
+        print("Nickname: {}".format(nickname))
+        hint = '"/gusten" eingeben, um momentan anwesende Gusten auszugeben.'
+        send_msg(client, 'Verbindung hergestellt! \n' + get_users_message() + '\n' + hint + '\n----')
         broadcast("{} ist dem Chat beigetreten!".format(nickname), [client])
 
         # Start handling thread for client
