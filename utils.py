@@ -1,5 +1,5 @@
 ENCODING = 'utf-8'
-RECV_SIZE = 1024
+RECV_SIZE = 2**20
 
 
 def send_msg(sock, msg):
