@@ -1,4 +1,4 @@
-ENCODING = 'ascii'
+ENCODING = 'utf-8'
 RECV_SIZE = 1024
 
 
