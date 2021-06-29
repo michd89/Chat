@@ -4,14 +4,6 @@ import threading
 
 from utils import recv_msg, send_msg
 
-host = '0.0.0.0'
-port = 50000
-
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((host, port))
-server.listen()
-print(f'Server horcht auf {host}:{port} ...')
-
 clients = []
 nicknames = []
 
@@ -51,6 +43,14 @@ def handle(client):
 
 # Main thread: Receiving / Listening function
 def receive():
+    host = '0.0.0.0'
+    port = 50000
+
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((host, port))
+    server.listen()
+    print(f'Server horcht auf {host}:{port} ...')
+
     while True:
         # Accept connection
         client, address = server.accept()
